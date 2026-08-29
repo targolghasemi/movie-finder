@@ -1,0 +1,12 @@
+{
+    "movies": [
+      {
+        "id": 1,
+        "title": "The Batman",
+        "poster_path": "/74xTEgt7R36Fpooo50r9T25onhq.jpg",
+        "vote_average": 7.8,
+        "release_date": "2022-03-01",
+        "genre_ids": [28, 80, 18]
+      }
+    ]
+  }
