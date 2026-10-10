@@ -15,7 +15,10 @@
 }
 
 .container-card {
-  width: 600px;
+  width: 80%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
   background-color: rgb(119, 77, 76);
   border-radius: 15px;
   padding: 35px;
@@ -35,6 +38,8 @@
 
 .search-input {
   flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 13px;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -47,6 +52,8 @@
 }
 
 .search-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
   padding: 13px 20px;
   border: none;
   border-radius: 10px;
@@ -257,7 +264,7 @@
 .genre{
   font-size: 14px;
   opacity: 0.75;
-  color: #ddd;
+  color: rgb(23, 19, 19);
 }
 
 @media (max-width:700px){
@@ -349,4 +356,28 @@
   font-size: 25px;
   font-weight: bold;
   text-align: center;
+}
+
+@media (max-width:480px) {
+  .title{
+    font-size: 20px;
+    white-space: nowrap;
+    margin-bottom: 20px;
+  }
+
+  .navbar{
+    padding: 0 16px;
+  }
+
+  .logo{
+    font-size: 20px;
+  }
+
+  .nav-links{
+    gap: 16px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+  }
 }

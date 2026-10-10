@@ -11,6 +11,7 @@ const Home = ({loading,setLoading,error,setError}) => {
   const [input, setInput] = useState("");
   const [movies, setMovies] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const inputRef = useRef(null)
   const observerRef = useRef(null)
 
   const searchHandler = (event) => {
@@ -21,19 +22,30 @@ const Home = ({loading,setLoading,error,setError}) => {
 
   const fetchMovies = async (query) => {
     if (!query.trim()) return;
-    console.log("QUERY:", query);
-    const response = await fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}`,
-      {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNmZmZDA4OTEyNDA1NjBiY2ZiYmYwMzkxM2Y4N2Y5NSIsIm5iZiI6MTc4Njg5MDE0NC45NjEsInN1YiI6IjZhODFjN2EwNWJlMmJjM2Y4ZTk0MDg1ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fTdQCFHMPyjLqpqLVvnzDk-FnBdpf-Mpv4c7r_9gCpU`,
-        },
-      }
-    );
+    
+    try {
 
-    const data = await response.json();
-    console.log("SEARCH RESPONSE:", data);
-    setMovies(data.results);
+      setLoading(true)
+      setError("")
+
+      const response = await fetch(
+        `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}`,
+        {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNmZmZDA4OTEyNDA1NjBiY2ZiYmYwMzkxM2Y4N2Y5NSIsIm5iZiI6MTc4Njg5MDE0NC45NjEsInN1YiI6IjZhODFjN2EwNWJlMmJjM2Y4ZTk0MDg1ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fTdQCFHMPyjLqpqLVvnzDk-FnBdpf-Mpv4c7r_9gCpU`,
+          },
+        }
+      );
+
+      const data = await response.json();
+    
+      setMovies(data.results);
+
+    } catch (error) {
+      setError("Failed to search movies")
+    }finally{
+      setLoading(false)
+    }
   };
 
   useEffect(()=>{
@@ -44,7 +56,7 @@ const Home = ({loading,setLoading,error,setError}) => {
         setMovies(response.data.results);
 
       } catch (error) {
-        setError("Failed to load movies")
+        setError("Failed to load movies . Please turn on your VPN .")
       
       }finally{
         setLoading(false)
@@ -78,11 +90,17 @@ const Home = ({loading,setLoading,error,setError}) => {
 
   const debouncedSearch = useMemo(()=>{
     return debounce(getSuggestions,1000)
+
+    return () =>{
+      debouncedSearch.cancel();
+    }
   },[])
 
   const handleSuggestionClick = (movie)=>{
     setInput(movie.title);
-    setSuggestions([])
+    setSuggestions([]);
+
+    inputRef.current.focus();
   }
 
   useEffect(()=>{
@@ -106,11 +124,26 @@ const Home = ({loading,setLoading,error,setError}) => {
         <h1 className="title">🎬 Movie Finder</h1>
   
         <div className="search-section">
+
+        {suggestions.length > 0 && (
+            <div className="suggestions">
+              {suggestions.slice(0, 5).map((movie) => (
+                <div
+                  className="suggestion"
+                  key={movie.id}
+                  onClick={() => handleSuggestionClick(movie)}
+                >
+                  {movie.title}
+                </div>
+              ))}
+            </div>
+          )}
   
           <input
+            ref={inputRef}
             className="search-input"
             value={input}
-            placeholder="Search for a movie"
+            placeholder="Search..."
             onChange={searchHandler}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
@@ -126,19 +159,7 @@ const Home = ({loading,setLoading,error,setError}) => {
             Search
           </button>
   
-          {suggestions.length > 0 && (
-            <div className="suggestions">
-              {suggestions.slice(0, 5).map((movie) => (
-                <div
-                  className="suggestion"
-                  key={movie.id}
-                  onClick={() => handleSuggestionClick(movie)}
-                >
-                  {movie.title}
-                </div>
-              ))}
-            </div>
-          )}
+          
   
         </div>
   
