@@ -1,5 +1,6 @@
 {
-  "homepage": ".",
+  
+"homepage": "https://targolghasemi.github.io/movie-finder",
   "name": "movie-finder",
   "version": "0.1.0",
   "private": true,
