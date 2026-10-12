@@ -64,7 +64,7 @@ const Home = ({loading,setLoading,error,setError}) => {
     };
 
     getMovies()
-  },[])
+  },[setError, setLoading])
 
 
 
@@ -90,11 +90,13 @@ const Home = ({loading,setLoading,error,setError}) => {
 
   const debouncedSearch = useMemo(()=>{
     return debounce(getSuggestions,1000)
-
-    return () =>{
-      debouncedSearch.cancel();
-    }
   },[])
+
+  useEffect(()=>{
+    return ()=>{
+      debouncedSearch.cancel()
+    }
+  },[debouncedSearch])
 
   const handleSuggestionClick = (movie)=>{
     setInput(movie.title);

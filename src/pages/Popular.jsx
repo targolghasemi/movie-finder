@@ -22,7 +22,7 @@ const Popular = ({loading,setLoading,error,setError})=>{
             }
         }
         getPopularMovies()
-    },[])
+    },[setError, setLoading])
 
 
 

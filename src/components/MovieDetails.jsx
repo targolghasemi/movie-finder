@@ -25,7 +25,7 @@ const MovieDetails = ({ loading, setLoading, error, setError }) => {
     };
 
     getMovieDetails();
-  }, [id]);
+  }, [id, setError, setLoading]);
 
   return (
     <>

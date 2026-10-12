@@ -23,7 +23,7 @@ const Toprated = ({loading,setLoading,error,setError})=>{
         }
       };
       getTopRatedMovies()
-    },[])
+    },[setError,setLoading])
 
 
 

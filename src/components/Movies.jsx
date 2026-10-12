@@ -1,4 +1,3 @@
-import { entries } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import Movie from "./Movie";
 
